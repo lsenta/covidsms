@@ -16,7 +16,19 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@c/*": [
+        "src/components/*"
+      ],
+      "@ap/*": [
+        "src/activitypub/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules"
