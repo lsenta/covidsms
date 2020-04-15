@@ -38,7 +38,7 @@ export function formatDate(date) {
 }
 
 export function formatTime(date) {
-  const hour = pad(date.getHours())
+  const hour = pad(date.getHours() + 2)
   const minute = pad(date.getMinutes())
   return `${hour}:${minute}`
 }
