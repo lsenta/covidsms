@@ -10,6 +10,8 @@ services:
   db:
     image: postgres:12.2
     restart: always
+    environment:
+      - POSTGRES_PASSWORD=thisissomelongpassword
   adminer:
     image: adminer
     restart: always
