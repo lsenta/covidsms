@@ -25,6 +25,7 @@ export const getRequest = async (requestID: string) => {
     const client = await pgClient();
     const res = await client.query(`SELECT * FROM requests WHERE requestID = $1`, [requestID]);
     await client.end();
+    console.debug('res:', res);
     return res.rows[0]
 }
 

@@ -3,7 +3,7 @@ import {withCORS} from "@utils/api";
 import {insertRequest} from "@utils/pg";
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.AUTH_TOKEN;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
 const URL = process.env.APP_URL;
 const REASONS = ['courses', 'travail', 'sante', 'famille', 'sport', 'judiciaire', 'missions'];
 

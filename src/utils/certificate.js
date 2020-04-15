@@ -2,18 +2,20 @@
 // import './main.css'
 
 import { PDFDocument, StandardFonts } from 'pdf-lib'
+
 import QRCode from 'qrcode'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faEye, faFilePdf } from '@fortawesome/free-solid-svg-icons'
-import fetch from 'isomorphic-unfetch'
-
-import pdfBase from './certificate.pdf'
+// import fetch from 'isomorphic-unfetch'
+// import pdfBase from './certificate.pdf'
+// console.error('PDFBASE:', pdfBase)
+import certificate from './certificate.json'
 
 library.add(faEye, faFilePdf)
 
 const generateQR = async text => {
   try {
-    var opts = {
+    const opts = {
       errorCorrectionLevel: 'M',
       type: 'image/png',
       quality: 0.92,
@@ -71,8 +73,13 @@ export async function generatePdf(profile, reasons) {
     `Motifs: ${reasons}`,
   ].join('; ')
 
-  console.error(pdfBase)
-  const existingPdfBytes = await fetch(pdfBase).then(res => res.arrayBuffer())
+  console.debug('data=', data)
+
+  // const p = path.join(process.cwd(), pdfBase)
+  // console.error(pdfBase, process.cwd(), p)
+  // const existingPdfBytes = fs.readFileSync(p, 'binary')
+  // await fetch(pdfBase).then(res => res.arrayBuffer())
+  const existingPdfBytes = Buffer.from(certificate.encoded, 'base64')
 
   const pdfDoc = await PDFDocument.load(existingPdfBytes)
   const page1 = pdfDoc.getPages()[0]
@@ -150,8 +157,7 @@ export async function generatePdf(profile, reasons) {
   })
 
   const pdfBytes = await pdfDoc.save()
-
-  return new Blob([pdfBytes], { type: 'application/pdf' })
+  return pdfBytes;
 }
 
 function downloadBlob(blob, fileName) {

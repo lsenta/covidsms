@@ -1,6 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {getRequest, getUser} from "@utils/pg";
-import {formatDate, formatTime} from '@utils/certificate';
+import {formatDate, formatTime, generatePdf} from '@utils/certificate';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const {
@@ -13,18 +13,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const profile = {
         datesortie: formatDate(request.created),
         heuresortie: formatTime(request.created),
-        requestID,
-        request,
-        user
+        ...request,
+        ...user
     }
-    const reasons = ['travail']
 
+    const pdf = await generatePdf(profile, request.reason);
+    const buffer = pdf.buffer.slice(pdf.byteOffset, pdf.byteLength + pdf.byteOffset);
 
     res.status(200)
-    res.json({profile, reasons})
-    // const pdf = await generatePdf(profile, reasons);
-    // res.setHeader('Content-type', 'application/pdf');
-    // res.send(pdf);
+    res.setHeader('Content-Length', pdf.byteLength);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.end(Buffer.from(buffer), 'binary');
 }
 
 export default handler;
