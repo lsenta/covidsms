@@ -1,6 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {getRequest, getUser} from "@utils/pg";
-import {formatDate, formatTime, generatePdf} from '@utils/certificate';
+import {getRequest, getUser} from "@api/utils/pg";
+import {formatDate, formatTime, generatePdf} from '@api/utils/certificate';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const {

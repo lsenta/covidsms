@@ -1,19 +1,19 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {withCORS} from "@utils/api";
-import {insertRequest} from "@utils/pg";
+import {withCORS} from "@api/utils";
+import {insertRequest} from "@api/utils/pg";
+import Twilio from 'twilio';
+import {REASONS} from "@api/utils/certificate";
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const URL = process.env.APP_URL;
-const REASONS = ['courses', 'travail', 'sante', 'famille', 'sport', 'judiciaire', 'missions'];
 
-const client = require('twilio')(accountSid, authToken);
+const client = Twilio(accountSid, authToken);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const {To, From, Body} = req.body
 
     const body = (Body as string).toLowerCase();
-
     const reason = REASONS.reduce((previous, current) => (
         body.includes(current) ? current : previous
     ), 'courses')

@@ -6,12 +6,11 @@ import { PDFDocument, StandardFonts } from 'pdf-lib'
 import QRCode from 'qrcode'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faEye, faFilePdf } from '@fortawesome/free-solid-svg-icons'
-// import fetch from 'isomorphic-unfetch'
-// import pdfBase from './certificate.pdf'
-// console.error('PDFBASE:', pdfBase)
 import certificate from './certificate.json'
 
 library.add(faEye, faFilePdf)
+
+export const REASONS = ['courses', 'travail', 'sante', 'famille', 'sport', 'judiciaire', 'missions'];
 
 const generateQR = async text => {
   try {
@@ -73,14 +72,7 @@ export async function generatePdf(profile, reasons) {
     `Motifs: ${reasons}`,
   ].join('; ')
 
-  console.debug('data=', data)
-
-  // const p = path.join(process.cwd(), pdfBase)
-  // console.error(pdfBase, process.cwd(), p)
-  // const existingPdfBytes = fs.readFileSync(p, 'binary')
-  // await fetch(pdfBase).then(res => res.arrayBuffer())
   const existingPdfBytes = Buffer.from(certificate.encoded, 'base64')
-
   const pdfDoc = await PDFDocument.load(existingPdfBytes)
   const page1 = pdfDoc.getPages()[0]
 
@@ -156,17 +148,6 @@ export async function generatePdf(profile, reasons) {
     height: 300,
   })
 
-  const pdfBytes = await pdfDoc.save()
-  return pdfBytes;
+  return await pdfDoc.save()
 }
-
-function downloadBlob(blob, fileName) {
-  const link = document.createElement('a')
-  var url = URL.createObjectURL(blob)
-  link.href = url
-  link.download = fileName
-  document.body.appendChild(link)
-  link.click()
-}
-
 

@@ -25,8 +25,8 @@
       "@c/*": [
         "src/components/*"
       ],
-      "@ap/*": [
-        "src/activitypub/*"
+      "@api/*": [
+        "src/pages/api/*"
       ]
     }
   },
